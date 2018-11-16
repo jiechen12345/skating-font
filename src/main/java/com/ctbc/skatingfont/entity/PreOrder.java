@@ -15,16 +15,24 @@ public class PreOrder {
     private String id;
     @ManyToOne(targetEntity = Sessions.class)
     private Sessions sessions;
+    @Column(length = 12)
     private String preorderDate;
     private String groupName;
+    @Column(length = 12)
     private String applicantName;
     private String applicantPhone;
+    @Column(length = 150)
     private String applicantEmail;
+    @Column(length = 50)
     private Integer groupNum;
-
+    @Column(length = 1)
+    //0:送出 1:OTP過 2:審核通過 3:到場??
+    private String status;
     public PreOrder() {
     }
-
+    public PreOrder(String id) {
+        this.id = id;
+    }
     public PreOrder(String id, Sessions sessions, String preorderDate, String groupName, String applicantName, String applicantPhone, String applicantEmail, Integer groupNum) {
         this.id = id;
         this.sessions = sessions;
@@ -34,6 +42,18 @@ public class PreOrder {
         this.applicantPhone = applicantPhone;
         this.applicantEmail = applicantEmail;
         this.groupNum = groupNum;
+    }
+
+    public PreOrder(String id, Sessions sessions, String preorderDate, String groupName, String applicantName, String applicantPhone, String applicantEmail, Integer groupNum, String status) {
+        this.id = id;
+        this.sessions = sessions;
+        this.preorderDate = preorderDate;
+        this.groupName = groupName;
+        this.applicantName = applicantName;
+        this.applicantPhone = applicantPhone;
+        this.applicantEmail = applicantEmail;
+        this.groupNum = groupNum;
+        this.status = status;
     }
 
     public String getId() {
@@ -100,4 +120,11 @@ public class PreOrder {
         this.groupNum = groupNum;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

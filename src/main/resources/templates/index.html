@@ -72,7 +72,7 @@
             success: function (data) {
                 var str = "";
                 $.each(data, function (index, value) {
-                    str += "<option value='" + value.id + "'>" + value.startTime + '-' + value.endTime + ' 剩餘可預約名額: [' + value.remaining + ']' + "</option>";
+                    str += "<option value='" + value.sessionsId + "'>" + value.startTime + '-' + value.endTime + ' 剩餘可預約名額: [' + value.remaining + ']' + "</option>";
                 });
                 $("#sessionsId").empty();
                 $("#sessionsId").append(str);
@@ -130,6 +130,7 @@
                     <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
                 </div>
             </div>
+            [[${errMsg}]]
             <!-- form **************************************************************-->
             <div container-fluid>
                 <form id='myForm' th:action="@{/addOrder}" method="post" class="needs-validation" novalidate>
@@ -217,19 +218,7 @@
                     </div>
 
                     <!-- <form name="uploadingForm" enctype="multipart/form-data" action="/testUpload" method="POST"> -->
-                    <div class="form-row">
-                        <div class="col-md mb-0">
 
-                                <input id="fileInput" type="file" name="uploadingFiles" onchange="updateSize();"
-                                       multiple>
-                                selected files: <span id="fileNum">0</span>;
-                                total size: <span id="fileSize">0</span>
-                                <input type="button" onclick="doUpload()" value="Upload files">
-
-
-
-                        </div>
-                        <div>
                             <!-- </form>-->
 
                             <div class="form-row">
@@ -273,10 +262,10 @@
             });
         }, false);
     })();
+    /*
 function doUpload(){
 
-    // var data2=new FormData($("#fileInput"));
-    // console.log(data2);
+
     var formData = new FormData();
     var file = $('#fileInput')[0].files[0];
     var f = $('#fileInput')[0];
@@ -297,13 +286,13 @@ function doUpload(){
         url: "/uploadImg",
         sync: true,
         success: function (data) {
-          console.log(1111111111);
         },
         error: function (jqXHR, exception) {
             ajaxError(jqXHR, exception);
         },
     });
 }
+*/
 
     $(".datetimepickerDat").datetimepicker({
         startView: 2,

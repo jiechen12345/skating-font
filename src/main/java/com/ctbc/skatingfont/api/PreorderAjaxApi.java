@@ -80,7 +80,7 @@ public class PreorderAjaxApi {
 
     private PreorderDto getPreorderDto(Sessions sessions) {
         PreorderDto preorderDto = new PreorderDto();
-        preorderDto.setId(Common.get(sessions.getId()));
+        preorderDto.setSessionsId(Common.get(sessions.getId()));
         preorderDto.setSessionsName(Common.get(sessions.getSessionsName()));
         preorderDto.setDat(Common.get(sessions.getDat()));
         preorderDto.setStartTime(Common.get(sessions.getStartTime()));

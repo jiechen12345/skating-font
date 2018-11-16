@@ -14,18 +14,18 @@ import java.io.IOException;
  */
 @RestController
 public class UploadAjax {
-    public static final String uploadingdir = System.getProperty("user.dir") + "/uploadingdir/";
-
-    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, consumes = { "multipart/form-data" })
-    public Boolean uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles) throws IOException {
-        //要改檔名所以應該改回
-        Boolean flag=false;
-        for(MultipartFile uploadedFile : uploadingFiles) {
-            File file = new File(uploadingdir + uploadedFile.getOriginalFilename());
-            uploadedFile.transferTo(file);
-        flag=true;
-        }
-
-        return flag;
-    }
+//    public static final String uploadingdir = System.getProperty("user.dir") + "/uploadingdir/";
+//
+//    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST, consumes = { "multipart/form-data" })
+//    public Boolean uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles) throws IOException {
+//        //要改檔名所以應該改回
+//        Boolean flag=false;
+//        for(MultipartFile uploadedFile : uploadingFiles) {
+//            File file = new File(uploadingdir + uploadedFile.getOriginalFilename());
+//            uploadedFile.transferTo(file);
+//        flag=true;
+//        }
+//
+//        return flag;
+//    }
 }
