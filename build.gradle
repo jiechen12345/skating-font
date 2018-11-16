@@ -70,4 +70,5 @@ dependencies {
     }
     testCompile('junit:junit:4.12')
     runtime('mysql:mysql-connector-java')
+    "commons-fileupload:commons-fileupload:1.2.2"
 }
