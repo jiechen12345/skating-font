@@ -7,24 +7,24 @@ import javax.persistence.Column;
  */
 public class PreorderDto {
 
-    private String dat;
-    private String sessionsName;
-    private String startTime;
-    private String endTime;
+    public String dat;
+    public String sessionsName;
+    public String startTime;
+    public String endTime;
     //已預約
-    private Integer reserved = 0;
+    public Integer reserved = 0;
     //剩餘人數
-    private Integer remaining =0;
+    public Integer remaining =0;
 
 
-    private String id;
-    private Integer sessionsId;
-    private String preorderDate;
-    private String groupName;
-    private String applicantName;
-    private String applicantPhone;
-    private String applicantEmail;
-    private Integer groupNum;
+    public String id;
+    public Integer sessionsId;
+    public String preorderDate;
+    public String groupName;
+    public String applicantName;
+    public String applicantPhone;
+    public String applicantEmail;
+    public Integer groupNum;
     //0:送出 1:OTP過 2:審核通過 3:到場??
     private String status;
     public PreorderDto() {
@@ -65,6 +65,10 @@ public class PreorderDto {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getId() {
+        return id;
     }
 
     public Integer getSessionsId() {

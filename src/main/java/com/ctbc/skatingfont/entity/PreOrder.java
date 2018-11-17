@@ -1,9 +1,12 @@
 package com.ctbc.skatingfont.entity;
 
+import org.joda.time.DateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import java.util.Date;
 
 /**
  * Created by JieChen on 2018/11/15.
@@ -28,6 +31,10 @@ public class PreOrder {
     @Column(length = 1)
     //0:送出 1:OTP過 2:審核通過 3:到場??
     private String status;
+    private Date createTime;
+    private Date otpTime;
+    private Date otpPassTime;
+    private Date successTime;
     public PreOrder() {
     }
     public PreOrder(String id) {
@@ -44,7 +51,7 @@ public class PreOrder {
         this.groupNum = groupNum;
     }
 
-    public PreOrder(String id, Sessions sessions, String preorderDate, String groupName, String applicantName, String applicantPhone, String applicantEmail, Integer groupNum, String status) {
+    public PreOrder(String id, Sessions sessions, String preorderDate, String groupName, String applicantName, String applicantPhone, String applicantEmail, Integer groupNum, String status,Date createTime) {
         this.id = id;
         this.sessions = sessions;
         this.preorderDate = preorderDate;
@@ -54,6 +61,39 @@ public class PreOrder {
         this.applicantEmail = applicantEmail;
         this.groupNum = groupNum;
         this.status = status;
+        this.createTime = createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Date getOtpTime() {
+        return otpTime;
+    }
+
+    public void setOtpTime(Date otpTime) {
+        this.otpTime = otpTime;
+    }
+
+    public Date getOtpPassTime() {
+        return otpPassTime;
+    }
+
+    public void setOtpPassTime(Date otpPassTime) {
+        this.otpPassTime = otpPassTime;
+    }
+
+    public Date getSuccessTime() {
+        return successTime;
+    }
+
+    public void setSuccessTime(Date successTime) {
+        this.successTime = successTime;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
     }
 
     public String getId() {

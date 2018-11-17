@@ -113,7 +113,7 @@
 </script>
 </head>
 
-<body class="text-center " style="background-color: #96BBB4">
+<body class="text-center " style="background-color: #96BBB4" onload="getSessions()">
 <div class="container-fluid">
     <div class="row">
         <!--引入sidebar-->
@@ -130,7 +130,7 @@
                     <div style="position:absolute;width:200%;height:200%;left:0; top:0"></div>
                 </div>
             </div>
-            [[${errMsg}]]
+            <H4>[[${errMsg}]]</H4>
             <!-- form **************************************************************-->
             <div container-fluid>
                 <form id='myForm' th:action="@{/addOrder}" method="post" class="needs-validation" novalidate>

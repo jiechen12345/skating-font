@@ -3,18 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Uploading Files Example with Spring Boot, Freemarker</title>
+    <script>
+
+    </script>
 </head>
 
 <body onload="updateSize();">
-<form name="uploadingForm" enctype="multipart/form-data" action="/test" method="POST">
+<form id="uploadingForm" name="uploadingForm" enctype="multipart/form-data" action="/uploadImg" method="POST">
+    <input type="text" id="preorderId" name="preorderId" th:value="${preorderDto!=null}?${preorderDto.getId()}:''">
     <p>
-        <input id="fileInput" type="file" name="uploadingFiles" onchange="updateSize();" multiple>
+        <input id="fileInput" type="file" name="uploadingFiles" onchange="updateSize();" multiple="multiple" required>
         selected files: <span id="fileNum">0</span>;
         total size: <span id="fileSize">0</span>
     </p>
     <p>
         <input type="submit" value="Upload files">
     </p>
+    <div id="output1" ></div>
 </form>
 <div>
 
@@ -27,6 +32,24 @@
 
 </div>
 <script>
+    (function () {
+        'use strict';
+        window.addEventListener('load', function () {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+
     function updateSize() {
         var nBytes = 0,
             oFiles = document.getElementById("fileInput").files,
@@ -37,7 +60,7 @@
 
         var sOutput = nBytes + " bytes";
         // optional code for multiples approximation
-        for (var aMultiples = ["KiB", "MiB", "GiB", "TiB", "PiB", "EiB", "ZiB", "YiB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
+        for (var aMultiples = ["KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"], nMultiple = 0, nApprox = nBytes / 1024; nApprox > 1; nApprox /= 1024, nMultiple++) {
             sOutput = nApprox.toFixed(3) + " " + aMultiples[nMultiple] + " (" + nBytes + " bytes)";
         }
         // end of optional code

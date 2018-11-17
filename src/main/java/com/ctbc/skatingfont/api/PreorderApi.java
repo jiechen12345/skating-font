@@ -7,6 +7,7 @@ import com.ctbc.skatingfont.dto.PreorderDto;
 import com.ctbc.skatingfont.entity.PreOrder;
 import com.ctbc.skatingfont.entity.Sessions;
 import com.ctbc.skatingfont.request.PreorderReq;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class PreorderApi {
             Sessions sessions = sessionsDao.findById(sessionsId).get();
             if(checkRemaing(sessions,groupNum)) {
                 preorderDao.saveAndFlush(new PreOrder(num));//先存
-                sessions.setReserved(groupNum);
+                sessions.setReserved(sessions.getReserved()+groupNum);//todo: 簡訊五分鐘沒過要加回去
                 sessionsDao.save(sessions);
                 PreorderDto preorderDto = new PreorderDto(num, sessionsId, preorderDate, preorderReq.getGroupName(), preorderReq.getApplicantName(), preorderReq.getApplicantPhone(), preorderReq.getApplicantEmail(), preorderReq.getGroupNum(), "0");
                 PreOrder preOrder = preorderDao.findById(num).get();
@@ -61,12 +62,13 @@ public class PreorderApi {
                 preOrder.setGroupNum(groupNum);
                 preOrder.setPreorderDate(preorderDate);
                 preOrder.setStatus("0");
+                preOrder.setCreateTime(DateTime.now().toDate());
                 preorderDao.save(preOrder);
 
                 model.addAttribute("preorderDto", preorderDto);
             }else{
-                model.addAttribute("errMsg", "該場次預約人數不竹");
-                return "/";
+                model.addAttribute("errMsg", "該場次可預約人數不足");
+                return "index";
             }
         } catch (Exception e) {
             LOGGER.error(e.toString());
@@ -89,6 +91,7 @@ public class PreorderApi {
         return "ok";
         //return "redirect:/members.html";
     }
+
 
     public String getSerialNum(String preorderReq) {
         String num = "";

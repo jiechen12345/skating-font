@@ -2,8 +2,10 @@ package com.ctbc.skatingfont.api;
 
 import com.ctbc.skatingfont.common.Common;
 import com.ctbc.skatingfont.dao.AccommodateDao;
+import com.ctbc.skatingfont.dao.PreorderDao;
 import com.ctbc.skatingfont.dao.SessionsDao;
 import com.ctbc.skatingfont.dto.PreorderDto;
+import com.ctbc.skatingfont.entity.PreOrder;
 import com.ctbc.skatingfont.entity.Sessions;
 import com.ctbc.skatingfont.request.PreorderReq;
 import org.slf4j.Logger;
@@ -32,6 +34,8 @@ public class PreorderAjaxApi {
     @Autowired
     private AccommodateDao accommodateDao;
     @Autowired
+    private PreorderDao preorderDao;
+    @Autowired
     private SessionsDao sessionsDao;
     @Value("${sessions.Holiday.name}")
     private String holidaySessionName;
@@ -56,6 +60,15 @@ public class PreorderAjaxApi {
             }
         }
         return preorderDtoList;
+    }
+
+    @RequestMapping(value = "/deletePreorder", method = RequestMethod.DELETE)
+    public void deletePreorder(@RequestBody String id) {
+        System.out.println("--- "+id);
+        PreOrder preOrder = preorderDao.findById(id).get();
+        Sessions sessions=preOrder.getSessions();
+        sessions.setReserved(sessions.getReserved()-preOrder.getGroupNum()); //把預約到的扣掉
+        preorderDao.delete(preOrder);
     }
 
     @RequestMapping(value = "/checkRemaining", method = RequestMethod.POST)
