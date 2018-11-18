@@ -28,13 +28,13 @@ public class PreOrder {
     private String applicantEmail;
     @Column(length = 50)
     private Integer groupNum;
-    @Column(length = 1)
-    //0:送出 1:OTP過 2:審核通過 3:到場??
-    private String status;
+    @ManyToOne(targetEntity = Status.class)
+    //1:送出表單 2:OTP申請 3:OTP通過 4:審核不通過 5:審核通過 6:到場
+    private Status status;
     private Date createTime;
     private Date otpTime;
     private Date otpPassTime;
-    private Date successTime;
+    private Date verifyTime;
     public PreOrder() {
     }
     public PreOrder(String id) {
@@ -51,7 +51,7 @@ public class PreOrder {
         this.groupNum = groupNum;
     }
 
-    public PreOrder(String id, Sessions sessions, String preorderDate, String groupName, String applicantName, String applicantPhone, String applicantEmail, Integer groupNum, String status,Date createTime) {
+    public PreOrder(String id, Sessions sessions, String preorderDate, String groupName, String applicantName, String applicantPhone, String applicantEmail, Integer groupNum, Status status, Date createTime) {
         this.id = id;
         this.sessions = sessions;
         this.preorderDate = preorderDate;
@@ -84,12 +84,12 @@ public class PreOrder {
         this.otpPassTime = otpPassTime;
     }
 
-    public Date getSuccessTime() {
-        return successTime;
+    public Date getVerifyTime() {
+        return verifyTime;
     }
 
-    public void setSuccessTime(Date successTime) {
-        this.successTime = successTime;
+    public void setVerifyTime(Date verifyTime) {
+        this.verifyTime = verifyTime;
     }
 
     public Date getCreateTime() {
@@ -160,11 +160,11 @@ public class PreOrder {
         this.groupNum = groupNum;
     }
 
-    public String getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 }

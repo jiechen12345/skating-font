@@ -3,9 +3,11 @@ package com.ctbc.skatingfont.api;
 import com.ctbc.skatingfont.common.Common;
 import com.ctbc.skatingfont.dao.PreorderDao;
 import com.ctbc.skatingfont.dao.SessionsDao;
+import com.ctbc.skatingfont.dao.StatusDao;
 import com.ctbc.skatingfont.dto.PreorderDto;
 import com.ctbc.skatingfont.entity.PreOrder;
 import com.ctbc.skatingfont.entity.Sessions;
+import com.ctbc.skatingfont.entity.Status;
 import com.ctbc.skatingfont.request.PreorderReq;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -35,6 +37,8 @@ public class PreorderApi {
     private PreorderDao preorderDao;
     @Autowired
     private SessionsDao sessionsDao;
+    @Autowired
+    private StatusDao statusDao;
     @Value("${sessions.ReserveOpenQuota}")
     Integer quota;
 
@@ -61,7 +65,8 @@ public class PreorderApi {
                 preOrder.setGroupName(groupName);
                 preOrder.setGroupNum(groupNum);
                 preOrder.setPreorderDate(preorderDate);
-                preOrder.setStatus("0");
+                Status status=statusDao.findById(1).get();//未申請OTP
+                preOrder.setStatus(status);
                 preOrder.setCreateTime(DateTime.now().toDate());
                 preorderDao.save(preOrder);
 

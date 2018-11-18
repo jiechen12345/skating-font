@@ -25,7 +25,7 @@ public class PreorderDto {
     public String applicantPhone;
     public String applicantEmail;
     public Integer groupNum;
-    //0:送出 1:OTP過 2:審核通過 3:到場??
+
     private String status;
     public PreorderDto() {
     }
