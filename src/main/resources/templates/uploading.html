@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Uploading Files Example with Spring Boot, Freemarker</title>
+    <title></title>
     <script>
 
     </script>
@@ -10,9 +10,10 @@
 
 <body onload="updateSize();">
 <form id="uploadingForm" name="uploadingForm" enctype="multipart/form-data" action="/uploadImg" method="POST">
+    <H5>[[${errMsg}]]</H5>
     <input type="text" id="preorderId" name="preorderId" th:value="${preorderDto!=null}?${preorderDto.getId()}:''">
     <p>
-        <input id="fileInput" type="file" name="uploadingFiles" onchange="updateSize();" multiple="multiple" required>
+        <input id="fileInput" type="file" name="uploadingFiles" onchange="updateSize();" accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp" multiple="multiple" required >
         selected files: <span id="fileNum">0</span>;
         total size: <span id="fileSize">0</span>
     </p>

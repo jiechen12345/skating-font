@@ -35,7 +35,13 @@ public class UploadingController {
             preorderId += "/";
             new File(this.uploadingdir + preorderId).mkdirs();
             for (MultipartFile uploadedFile : uploadingFiles) {
+
                 File file = new File(uploadingdir + preorderId + uploadedFile.getOriginalFilename());
+                //檢查是否是圖片
+                if (!checkFile(file.getName())) {
+                    model.addAttribute("errMsg", "請上傳圖片格式");
+                    return "uploading";
+                }
                 uploadedFile.transferTo(file);
             }
         } else {
@@ -43,6 +49,21 @@ public class UploadingController {
             return "index";
         }
         return "redirect:/uploadImg"; //todo: 要改成到OTP
+    }
+
+    /**
+     * 判断是否为允许的上传文件类型,true表示允许
+     */
+    private boolean checkFile(String fileName) {
+        //设置允许上传文件类型
+        String suffixList = "jpg,gif,png,bmp,jpeg";
+        // 获取文件后缀
+        String suffix = fileName.substring(fileName.lastIndexOf(".")
+                + 1, fileName.length());
+        if (suffixList.contains(suffix.trim().toLowerCase())) {
+            return true;
+        }
+        return false;
     }
 
 
