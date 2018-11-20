@@ -48,7 +48,6 @@ repositories {
 dependencies {
     compile 'org.springframework:spring-core'
     compile 'org.springframework.boot:spring-boot-starter-tomcat'
-    providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     compile 'org.springframework.boot:spring-boot-autoconfigure'
     compile('org.springframework.boot:spring-boot-starter-web')
     compile('org.springframework.boot:spring-boot-devtools')

@@ -54,7 +54,7 @@ public class PreorderApi {
             Sessions sessions = sessionsDao.findById(sessionsId).get();
             if(checkRemaing(sessions,groupNum)) {
                 preorderDao.saveAndFlush(new PreOrder(num));//先存
-                sessions.setReserved(sessions.getReserved()+groupNum);//todo: 簡訊五分鐘沒過要加回去
+                sessions.setReserved(sessions.getReserved()+groupNum);//todo: 簡訊兩分鐘沒過要加回去
                 sessionsDao.save(sessions);
                 PreorderDto preorderDto = new PreorderDto(num, sessionsId, preorderDate, preorderReq.getGroupName(), preorderReq.getApplicantName(), preorderReq.getApplicantPhone(), preorderReq.getApplicantEmail(), preorderReq.getGroupNum(), "0");
                 PreOrder preOrder = preorderDao.findById(num).get();
@@ -98,10 +98,10 @@ public class PreorderApi {
     }
 
 
-    public String getSerialNum(String preorderReq) {
+    public String getSerialNum(String preorderDat) {
         String num = "";
-        String dateString = preorderReq.replace("-", "");
-        PreOrder preorder = preorderDao.findFirstByOrderByIdDesc();
+        String dateString = preorderDat.replace("-", "");
+        PreOrder preorder = preorderDao.findFirstByAndPreorderDateOrderByIdDesc(preorderDat);
         if (preorder != null && preorder.getId().length() > 8 && dateString.equals(preorder.getId().substring(0, 8))) { //如果當天已有
             Long maxId = Long.parseLong(preorder.getId());
             maxId = maxId + 1;
