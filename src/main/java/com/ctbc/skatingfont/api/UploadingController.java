@@ -68,7 +68,6 @@ public class UploadingController {
 
 
     public void deletePreorder(String id) {
-        System.out.println("--- "+id);
         PreOrder preOrder = preorderDao.findById(id).get();
         preorderDao.delete(preOrder);
     }

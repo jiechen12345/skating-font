@@ -16,16 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.persistence.Column;
-import java.awt.print.Book;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.Optional;
 
 /**
  * Created by JieChen on 2018/11/15.
@@ -48,7 +43,7 @@ public class PreorderApi {
             , @RequestParam String applicantName, @RequestParam String applicantPhone, @RequestParam String applicantEmail, @RequestParam Integer groupNum,
                            Model model) throws IOException {
         PreorderReq preorderReq = new PreorderReq(sessionsId, preorderDate, groupName, applicantName, applicantPhone, applicantEmail, groupNum);
-        System.out.print("***  " + preorderReq.toString());
+        //System.out.print("***  " + preorderReq.toString());
         try {
             String num = this.getSerialNum(preorderReq.getPreorderDate());
             Sessions sessions = sessionsDao.findById(sessionsId).get();
@@ -69,7 +64,6 @@ public class PreorderApi {
                 preOrder.setStatus(status);
                 preOrder.setCreateTime(DateTime.now().toDate());
                 preorderDao.save(preOrder);
-
                 model.addAttribute("preorderDto", preorderDto);
             }else{
                 model.addAttribute("errMsg", "該場次可預約人數不足");
@@ -91,7 +85,7 @@ public class PreorderApi {
                                 applicantEmail, @RequestParam Integer groupNum,
                         Model model) throws IOException {
         PreorderReq preorderReq = new PreorderReq(sessionsId, preorderDate, groupName, applicantName, applicantPhone, applicantEmail, groupNum);
-        System.out.print("***  " + preorderReq.toString());
+        //System.out.print("***  " + preorderReq.toString());
 
         return "ok";
         //return "redirect:/members.html";

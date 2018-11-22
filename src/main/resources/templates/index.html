@@ -86,6 +86,12 @@
     function checkRemaining() {
         var sessionsId = $("#sessionsId option:selected").val();
         var groupNum = $("#groupNum").val();
+        if(groupNum<10){
+            alertWarning('報名人數必須大於等於10人！')
+            $("#groupNum").val('');
+            $("#groupNum").focus();
+            return;
+        }
         if (typeof sessionsId !== "undefined") {
             $.ajax({
                 contentType: 'application/json; charset=UTF-8',

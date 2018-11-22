@@ -51,7 +51,7 @@ public class PreorderAjaxApi {
 
     @RequestMapping(value = "/findSessionsByPreorderDateAjax", method = RequestMethod.POST)
     public List<PreorderDto> findSessionsByPreorderDateAjax(@RequestBody String preorderDate) {
-        System.out.println(preorderDate);
+        LOGGER.info(preorderDate);
         List<Sessions> sessionsList = sessionsDao.findAllByDatOrderByStartTime(preorderDate);
         List<PreorderDto> preorderDtoList = new ArrayList<PreorderDto>();
         for (Sessions s : sessionsList) {
@@ -64,17 +64,15 @@ public class PreorderAjaxApi {
 
     @RequestMapping(value = "/deletePreorder", method = RequestMethod.DELETE)
     public void deletePreorder(@RequestBody String id) {
-        System.out.println("--- "+id);
         PreOrder preOrder = preorderDao.findById(id).get();
-        Sessions sessions=preOrder.getSessions();
-        sessions.setReserved(sessions.getReserved()-preOrder.getGroupNum()); //把預約到的扣掉
+        Sessions sessions = preOrder.getSessions();
+        sessions.setReserved(sessions.getReserved() - preOrder.getGroupNum()); //把預約到的扣掉
         preorderDao.delete(preOrder);
     }
 
     @RequestMapping(value = "/checkRemaining", method = RequestMethod.POST)
     public Boolean checkRemaining(@RequestBody PreorderReq preorderReq) {
         Boolean flag = false;
-        System.out.println(preorderReq);
         try {
             Optional<Sessions> sessions = sessionsDao.findById(preorderReq.getSessionsId());
             if (sessions != null) {
@@ -84,7 +82,7 @@ public class PreorderAjaxApi {
                     flag = true;
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             LOGGER.error(e.toString());
             return flag;
         }
