@@ -75,7 +75,7 @@ public class PreorderAjaxApi {
         Boolean flag = false;
         try {
             Optional<Sessions> sessions = sessionsDao.findById(preorderReq.getSessionsId());
-            if (sessions != null) {
+            if (sessions.isPresent()) {
                 Sessions sessions1 = sessions.get();
                 int remaining = quota - Common.get(sessions1.getReserved());
                 if (preorderReq.getGroupNum() <= remaining) {

@@ -45,27 +45,37 @@ public class PreorderApi {
         PreorderReq preorderReq = new PreorderReq(sessionsId, preorderDate, groupName, applicantName, applicantPhone, applicantEmail, groupNum);
         //System.out.print("***  " + preorderReq.toString());
         try {
-            String num = this.getSerialNum(preorderReq.getPreorderDate());
             Sessions sessions = sessionsDao.findById(sessionsId).get();
-            if(checkRemaing(sessions,groupNum)) {
-                preorderDao.saveAndFlush(new PreOrder(num));//先存
-                sessions.setReserved(sessions.getReserved()+groupNum);//todo: 簡訊兩分鐘沒過要加回去
-                sessionsDao.save(sessions);
-                PreorderDto preorderDto = new PreorderDto(num, sessionsId, preorderDate, preorderReq.getGroupName(), preorderReq.getApplicantName(), preorderReq.getApplicantPhone(), preorderReq.getApplicantEmail(), preorderReq.getGroupNum(), "0");
-                PreOrder preOrder = preorderDao.findById(num).get();
-                preOrder.setSessions(sessions);
-                preOrder.setApplicantEmail(applicantEmail);
-                preOrder.setApplicantName(applicantName);
-                preOrder.setApplicantPhone(applicantPhone);
-                preOrder.setGroupName(groupName);
-                preOrder.setGroupNum(groupNum);
-                preOrder.setPreorderDate(preorderDate);
-                Status status=statusDao.findById(1).get();//未申請OTP
-                preOrder.setStatus(status);
-                preOrder.setCreateTime(DateTime.now().toDate());
-                preorderDao.save(preOrder);
-                model.addAttribute("preorderDto", preorderDto);
-            }else{
+            if (checkRemaing(sessions, groupNum)) {
+                if (checkPhone(sessions, applicantPhone)) {
+                    String num = this.getSerialNum(preorderReq.getPreorderDate());
+                    preorderDao.saveAndFlush(new PreOrder(num));//先存
+                    sessions.setReserved(sessions.getReserved() + groupNum);//todo: 簡訊兩分鐘沒過要加回去
+                    sessionsDao.save(sessions);
+                    PreorderDto preorderDto = new PreorderDto(num, sessionsId, preorderDate, preorderReq.getGroupName(), preorderReq.getApplicantName(), preorderReq.getApplicantPhone(), preorderReq.getApplicantEmail(), preorderReq.getGroupNum(), "0");
+                    PreOrder preOrder = preorderDao.findById(num).get();
+                    preOrder.setSessions(sessions);
+                    preOrder.setApplicantEmail(applicantEmail);
+                    preOrder.setApplicantName(applicantName);
+                    preOrder.setApplicantPhone(applicantPhone);
+                    preOrder.setGroupName(groupName);
+                    preOrder.setGroupNum(groupNum);
+                    preOrder.setPreorderDate(preorderDate);
+                    Status status = statusDao.findById(1).get();//未申請OTP
+                    preOrder.setStatus(status);
+                    preOrder.setCreateTime(DateTime.now().toDate());
+                    try {
+                        preorderDao.save(preOrder);
+                    } catch (Exception e) {
+                        LOGGER.error(e.toString());
+                        preorderDao.delete(preOrder);
+                    }
+                    model.addAttribute("preorderDto", preorderDto);
+                } else {
+                    model.addAttribute("errMsg", "同場次此手機號碼已註冊過");
+                    return "index";
+                }
+            } else {
                 model.addAttribute("errMsg", "該場次可預約人數不足");
                 return "index";
             }
@@ -115,5 +125,13 @@ public class PreorderApi {
         return flag;
     }
 
+    public Boolean checkPhone(Sessions sessions, String applicantPhone) {
+        Boolean flag = false;
+        Integer num = preorderDao.countAllBySessionsAndAndApplicantPhone(sessions, applicantPhone);
+        if (num == 0) {
+            flag = true;
+        }
+        return flag;
+    }
 
 }

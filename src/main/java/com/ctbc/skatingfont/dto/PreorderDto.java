@@ -30,6 +30,10 @@ public class PreorderDto {
     public PreorderDto() {
     }
 
+    public PreorderDto(String id) {
+        this.id = id;
+    }
+
     public PreorderDto(String id, Integer sessionsId, String preorderDate, String groupName, String applicantName, String applicantPhone, String applicantEmail, Integer groupNum, String status) {
         this.id = id;
         this.sessionsId = sessionsId;

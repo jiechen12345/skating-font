@@ -1,6 +1,7 @@
 package com.ctbc.skatingfont.api;
 
 import com.ctbc.skatingfont.dao.PreorderDao;
+import com.ctbc.skatingfont.dto.PreorderDto;
 import com.ctbc.skatingfont.entity.PreOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 public class UploadingController {
@@ -31,15 +33,18 @@ public class UploadingController {
 
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
     public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
-        if (preorderId != null && !"".equals(preorderId)) {
-            preorderId += "/";
-            new File(this.uploadingdir + preorderId).mkdirs();
+        PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
+
+        if (preorderId != null && !"".equals(preorderId) && preOrder != null) {
+            String subDir = preorderId + "/";
+            new File(this.uploadingdir + subDir).mkdirs();
             for (MultipartFile uploadedFile : uploadingFiles) {
 
-                File file = new File(uploadingdir + preorderId + uploadedFile.getOriginalFilename());
+                File file = new File(uploadingdir + subDir + uploadedFile.getOriginalFilename());
                 //檢查是否是圖片
                 if (!checkFile(file.getName())) {
                     model.addAttribute("errMsg", "請上傳圖片格式");
+                    model.addAttribute("preorderDto", new PreorderDto(preorderId));
                     return "uploading";
                 }
                 uploadedFile.transferTo(file);
