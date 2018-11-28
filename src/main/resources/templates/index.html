@@ -42,6 +42,15 @@
         }
     }
 
+    function isDate() {
+        var re = (/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+        if (!re.test($("#preorderDate").val())) {
+            alertWarning('日期格式有誤！')
+            $("#preorderDate").val('');
+            $("#preorderDate").focus();
+        }
+    }
+
     function isEmail() {
         re = /^([a-zA-Z0-9_\.\-\+])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         if (!re.test($("#applicantEmail").val())) {
@@ -86,7 +95,7 @@
     function checkRemaining() {
         var sessionsId = $("#sessionsId option:selected").val();
         var groupNum = $("#groupNum").val();
-        if(groupNum<10){
+        if (groupNum < 10) {
             alertWarning('報名人數必須大於等於10人！')
             $("#groupNum").val('');
             $("#groupNum").focus();
@@ -146,7 +155,7 @@
                             <input id='preorderDate' name="preorderDate" type="text"
                                    class="form-control datetimepickerDat"
                                    placeholder="請輸入報名日期"
-                                   onchange="getSessions()"
+                                   onchange="isDate();getSessions();"
                                    required>
                             <div class="invalid-feedback">
                                 請輸入報名日期.
@@ -225,22 +234,22 @@
 
                     <!-- <form name="uploadingForm" enctype="multipart/form-data" action="/testUpload" method="POST"> -->
 
-                            <!-- </form>-->
+                    <!-- </form>-->
 
-                            <div class="form-row">
-                                <div class="col-md mb-0">
-                                    <div class="button-bar">
-                                        <button class="btn btn-success" id="create" name="create"
-                                                type="submit">新增
-                                        </button>
-                                        </button>
-                                        <button class="btn btn-secondary" onclick="reInThisPage();" id="reset"
-                                                name="reset"
-                                                type="button">清空
-                                        </button>
-                                    </div>
-                                </div>
+                    <div class="form-row">
+                        <div class="col-md mb-0">
+                            <div class="button-bar">
+                                <button class="btn btn-success" id="create" name="create"
+                                        type="submit">新增
+                                </button>
+                                </button>
+                                <button class="btn btn-secondary" onclick="reInThisPage();" id="reset"
+                                        name="reset"
+                                        type="button">清空
+                                </button>
                             </div>
+                        </div>
+                    </div>
                 </form>
             </div>
 
@@ -268,37 +277,10 @@
             });
         }, false);
     })();
-    /*
-function doUpload(){
 
-
-    var formData = new FormData();
-    var file = $('#fileInput')[0].files[0];
-    var f = $('#fileInput')[0];
-    var f1= $('#fileInput')[0].files[0];
-    console.log(f);
-    var f2= $('#fileInput')[0].files[1];
-    console.log(f);
-    formData.append("uploadingFiles", file);
-
-
-    $.ajax({
-        enctype: 'multipart/form-data',
-        processData: false,
-        contentType: false,
-        cache: false,
-        type: "post",
-        data: (formData),
-        url: "/uploadImg",
-        sync: true,
-        success: function (data) {
-        },
-        error: function (jqXHR, exception) {
-            ajaxError(jqXHR, exception);
-        },
-    });
-}
-*/
+    function reInThisPage() {
+        location.reload();
+    }
 
     $(".datetimepickerDat").datetimepicker({
         startView: 2,

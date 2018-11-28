@@ -69,6 +69,7 @@ public class PreorderApi {
                     } catch (Exception e) {
                         LOGGER.error(e.toString());
                         preorderDao.delete(preOrder);
+                        model.addAttribute("errMsg", "系統發生異常請再嘗試，或者洽系統相關人員!");
                     }
                     model.addAttribute("preorderDto", preorderDto);
                 } else {
