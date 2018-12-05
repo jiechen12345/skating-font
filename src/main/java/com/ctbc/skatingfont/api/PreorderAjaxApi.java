@@ -55,7 +55,8 @@ public class PreorderAjaxApi {
         List<Sessions> sessionsList = sessionsDao.findAllByDatOrderByStartTime(preorderDate);
         List<PreorderDto> preorderDtoList = new ArrayList<PreorderDto>();
         for (Sessions s : sessionsList) {
-            if (s.getAccommodate().getNum() + (Common.get(s.getExtra())) >= quota) {
+            //該場次追加人數低於-50代表該場次不開放預約
+            if (s.getAccommodate().getNum() + (Common.get(s.getExtra())) >= quota && s.getExtra() >= -50) {
                 preorderDtoList.add(this.getPreorderDto(s));
             }
         }
