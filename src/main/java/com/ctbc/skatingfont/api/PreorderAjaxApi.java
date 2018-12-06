@@ -1,6 +1,7 @@
 package com.ctbc.skatingfont.api;
 
 import com.ctbc.skatingfont.common.Common;
+import com.ctbc.skatingfont.core.FtpProperties;
 import com.ctbc.skatingfont.dao.AccommodateDao;
 import com.ctbc.skatingfont.dao.PreorderDao;
 import com.ctbc.skatingfont.dao.SessionsDao;
@@ -51,6 +52,7 @@ public class PreorderAjaxApi {
 
     @RequestMapping(value = "/findSessionsByPreorderDateAjax", method = RequestMethod.POST)
     public List<PreorderDto> findSessionsByPreorderDateAjax(@RequestBody String preorderDate) {
+
         LOGGER.info(preorderDate);
         List<Sessions> sessionsList = sessionsDao.findAllByDatOrderByStartTime(preorderDate);
         List<PreorderDto> preorderDtoList = new ArrayList<PreorderDto>();
