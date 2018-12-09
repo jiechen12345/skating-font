@@ -3,6 +3,7 @@ package com.ctbc.skatingfont.api;
 import com.ctbc.skatingfont.dao.PreorderDao;
 import com.ctbc.skatingfont.dto.PreorderDto;
 import com.ctbc.skatingfont.entity.PreOrder;
+import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,65 +42,68 @@ public class UploadingController {
         return "uploading";
     }
 
-        @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
-    public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
-        PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
-
-        if (preorderId != null && !"".equals(preorderId) && preOrder != null) {
-            String subDir = preorderId + "/";
-            new File(this.uploadingdir + subDir).mkdirs();
-            for (MultipartFile uploadedFile : uploadingFiles) {
-
-                File file = new File(uploadingdir + subDir + uploadedFile.getOriginalFilename());
-                //檢查是否是圖片
-                if (!checkFile(file.getName())) {
-                    model.addAttribute("errMsg", "請上傳圖片格式");
-                    model.addAttribute("preorderDto", new PreorderDto(preorderId));
-                    return "uploading";
-                }
-                uploadedFile.transferTo(file);
-            }
-        } else {
-            model.addAttribute("errMsg", "系統錯誤請嘗試重新操作!");
-            return "index";
-        }
-        return "redirect:/uploadImg"; //todo: 要改成到OTP
-    }
-//    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
+    //        @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
 //    public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
 //        PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
 //
-//        //-----
-//        Session<FTPFile> session = sessionFactory.getSession();
-//        logger.info("current session is:[{}]", session.hashCode());
-//        logger.info("exists :[{}]", session.exists("/123132"));
-//        session.mkdir("/201812130009");
-//        logger.info("exists :[{}]", session.exists("/201812130009"));
-//        //--
-//
-//        if (preOrder != null) {
-//            String subDir = "/" + preorderId + "/";
-//            session.mkdir(subDir);
-//            //new File(this.uploadingdir + subDir).mkdirs();
+//        if (preorderId != null && !"".equals(preorderId) && preOrder != null) {
+//            String subDir = preorderId + "/";
+//            new File(this.uploadingdir + subDir).mkdirs();
 //            for (MultipartFile uploadedFile : uploadingFiles) {
-//                session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
-//                //   File file = new File(uploadingdir + subDir + uploadedFile.getOriginalFilename());
-//                //檢查是否是圖片
-////                if (!checkFile(file.getName())) {
-////                    model.addAttribute("errMsg", "請上傳圖片格式");
-////                    model.addAttribute("preorderDto", new PreorderDto(preorderId));
-////                    return "uploading";
-////                }
-////                uploadedFile.transferTo(file);
 //
+//                File file = new File(uploadingdir + subDir + uploadedFile.getOriginalFilename());
+//                //檢查是否是圖片
+//                if (!checkFile(file.getName())) {
+//                    model.addAttribute("errMsg", "請上傳圖片格式");
+//                    model.addAttribute("preorderDto", new PreorderDto(preorderId));
+//                    return "uploading";
+//                }
+//                uploadedFile.transferTo(file);
 //            }
-//            session.close();
 //        } else {
 //            model.addAttribute("errMsg", "系統錯誤請嘗試重新操作!");
 //            return "index";
 //        }
 //        return "redirect:/uploadImg"; //todo: 要改成到OTP
 //    }
+    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
+    public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
+        PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
+
+        //-----
+        Session<FTPFile> session = sessionFactory.getSession();
+        logger.info("current session is:[{}]", session.hashCode());
+        logger.info("exists :[{}]", session.exists("/123132"));
+        session.mkdir("/201812130009");
+        logger.info("exists :[{}]", session.exists("/201812130009"));
+        //--
+
+        if (preOrder != null) {
+            String subDir = "/" + preorderId + "/";
+            session.mkdir(subDir);
+            //new File(this.uploadingdir + subDir).mkdirs();
+            for (MultipartFile uploadedFile : uploadingFiles) {
+                session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
+                //FTPClient ftpClient = (FTPClient) session.getClientInstance();
+                System.out.print(11);
+                //   File file = new File(uploadingdir + subDir + uploadedFile.getOriginalFilename());
+                //檢查是否是圖片
+//                if (!checkFile(file.getName())) {
+//                    model.addAttribute("errMsg", "請上傳圖片格式");
+//                    model.addAttribute("preorderDto", new PreorderDto(preorderId));
+//                    return "uploading";
+//                }
+//                uploadedFile.transferTo(file);
+
+            }
+
+            session.close();
+        } else {
+            model.addAttribute("errMsg", "系統錯誤請嘗試重新操作!");
+            return "index";
+        }
+        return "redirect:/uploadImg"; //todo: 要改成到OTP
+    }
 
     /**
      * 判断是否为允许的上传文件类型,true表示允许

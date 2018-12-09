@@ -4,6 +4,8 @@ import com.ctbc.skatingfont.api.PreorderAjaxApi;
 import com.ctbc.skatingfont.core.FtpProperties;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
+import org.apache.commons.net.ftp.FTPSClient;
+import org.apache.commons.net.ftp.FTPSServerSocketFactory;
 import org.apache.commons.net.util.TrustManagerUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.springframework.integration.file.remote.session.Session;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.ftp.session.DefaultFtpsSessionFactory;
 
+import javax.net.ssl.TrustManager;
 import java.io.IOException;
 
 
@@ -34,16 +37,19 @@ public class FtpConfig {
         sf.setUsername(ftpProperties.getFtpUsername());
         sf.setPassword(ftpProperties.getFtpPassword());
         sf.setBufferSize(1024 * 512);
-        sf.setClientMode(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
-        sf.setFileType(2);
-        sf.setUseClientMode(true);
-        sf.setImplicit(true);
         sf.setTrustManager(TrustManagerUtils.getAcceptAllTrustManager());
-        sf.setProt("P");
-        sf.setProtocol("TLSv1.2");
-        sf.setProtocols(new String[]{"TLSv1.2"});
-        sf.setSessionCreation(true);
-        sf.setCipherSuites(new String[]{"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"});
+        // sf.setTrustManager(new TrustManager());
+        sf.setClientMode(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
+
+//        sf.setFileType(2);
+//        sf.setUseClientMode(true);
+//        sf.setImplicit(true);
+//        sf.setTrustManager(TrustManagerUtils.getAcceptAllTrustManager());
+//        sf.setProt("P");
+//        sf.setProtocol("TLSv1.2");
+//        sf.setProtocols(new String[]{"TLSv1.2"});
+//        sf.setSessionCreation(true);
+//        sf.setCipherSuites(new String[]{"TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"});
         return new CachingSessionFactory<>(sf);
     }
 

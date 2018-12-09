@@ -125,11 +125,11 @@ public class PreorderAjaxApi {
     }
 
     public void aa() throws IOException {
-        Session<FTPFile> session = sessionFactory.getSession();
+        Session session = sessionFactory.getSession();
 
         logger.info("current session is:[{}]", session.hashCode());
         logger.info("exists :[{}]", session.exists("/123132"));
-        session.mkdir("/201812130009");
+        session.mkdir("/2018121300099999");
         logger.info("exists :[{}]", session.exists("/201812130009"));
 
         //FtpClient ftpClient = (FtpClient) session.getClientInstance();
