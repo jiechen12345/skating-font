@@ -3,8 +3,14 @@ package com.ctbc.skatingfont.api;
 import com.ctbc.skatingfont.dao.PreorderDao;
 import com.ctbc.skatingfont.dto.PreorderDto;
 import com.ctbc.skatingfont.entity.PreOrder;
+import org.apache.commons.net.ftp.FTPFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.integration.file.remote.session.Session;
+import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +29,10 @@ public class UploadingController {
     String uploadingdir;
     @Autowired
     private PreorderDao preorderDao;
+    @Autowired
+    @Qualifier("ftpSessionFactory")
+    private SessionFactory<FTPFile> sessionFactory;
+    Logger logger = LoggerFactory.getLogger(PreorderAjaxApi.class);
 
     @RequestMapping(value = "/uploadImg", method = RequestMethod.GET)
     public String uploading(Model model) {
@@ -31,7 +41,7 @@ public class UploadingController {
         return "uploading";
     }
 
-    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
+        @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
     public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
         PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
 
@@ -55,6 +65,41 @@ public class UploadingController {
         }
         return "redirect:/uploadImg"; //todo: 要改成到OTP
     }
+//    @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
+//    public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
+//        PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
+//
+//        //-----
+//        Session<FTPFile> session = sessionFactory.getSession();
+//        logger.info("current session is:[{}]", session.hashCode());
+//        logger.info("exists :[{}]", session.exists("/123132"));
+//        session.mkdir("/201812130009");
+//        logger.info("exists :[{}]", session.exists("/201812130009"));
+//        //--
+//
+//        if (preOrder != null) {
+//            String subDir = "/" + preorderId + "/";
+//            session.mkdir(subDir);
+//            //new File(this.uploadingdir + subDir).mkdirs();
+//            for (MultipartFile uploadedFile : uploadingFiles) {
+//                session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
+//                //   File file = new File(uploadingdir + subDir + uploadedFile.getOriginalFilename());
+//                //檢查是否是圖片
+////                if (!checkFile(file.getName())) {
+////                    model.addAttribute("errMsg", "請上傳圖片格式");
+////                    model.addAttribute("preorderDto", new PreorderDto(preorderId));
+////                    return "uploading";
+////                }
+////                uploadedFile.transferTo(file);
+//
+//            }
+//            session.close();
+//        } else {
+//            model.addAttribute("errMsg", "系統錯誤請嘗試重新操作!");
+//            return "index";
+//        }
+//        return "redirect:/uploadImg"; //todo: 要改成到OTP
+//    }
 
     /**
      * 判断是否为允许的上传文件类型,true表示允许

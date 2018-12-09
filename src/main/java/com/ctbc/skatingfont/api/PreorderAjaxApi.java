@@ -1,6 +1,7 @@
 package com.ctbc.skatingfont.api;
 
 import com.ctbc.skatingfont.common.Common;
+import com.ctbc.skatingfont.config.FtpConfig;
 import com.ctbc.skatingfont.core.FtpProperties;
 import com.ctbc.skatingfont.dao.AccommodateDao;
 import com.ctbc.skatingfont.dao.PreorderDao;
@@ -9,16 +10,23 @@ import com.ctbc.skatingfont.dto.PreorderDto;
 import com.ctbc.skatingfont.entity.PreOrder;
 import com.ctbc.skatingfont.entity.Sessions;
 import com.ctbc.skatingfont.request.PreorderReq;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.integration.file.remote.session.Session;
+import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import sun.net.ftp.FtpClient;
 
 import javax.persistence.criteria.Predicate;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -38,6 +46,8 @@ public class PreorderAjaxApi {
     private PreorderDao preorderDao;
     @Autowired
     private SessionsDao sessionsDao;
+    @Autowired
+    private FtpConfig ftpConfig;
     @Value("${sessions.Holiday.name}")
     private String holidaySessionName;
     //假日代號
@@ -49,10 +59,19 @@ public class PreorderAjaxApi {
     String endTime;
     @Value("${sessions.ReserveOpenQuota}")
     Integer quota;
+    Logger logger = LoggerFactory.getLogger(PreorderAjaxApi.class);
+
+    @Autowired
+    @Qualifier("ftpSessionFactory")
+    private SessionFactory<FTPFile> sessionFactory;
 
     @RequestMapping(value = "/findSessionsByPreorderDateAjax", method = RequestMethod.POST)
     public List<PreorderDto> findSessionsByPreorderDateAjax(@RequestBody String preorderDate) {
-
+        try {
+            this.aa();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         LOGGER.info(preorderDate);
         List<Sessions> sessionsList = sessionsDao.findAllByDatOrderByStartTime(preorderDate);
         List<PreorderDto> preorderDtoList = new ArrayList<PreorderDto>();
@@ -103,5 +122,23 @@ public class PreorderAjaxApi {
         int remaining = quota - Common.get(sessions.getReserved());
         preorderDto.setRemaining(remaining);
         return preorderDto;
+    }
+
+    public void aa() throws IOException {
+        Session<FTPFile> session = sessionFactory.getSession();
+
+        logger.info("current session is:[{}]", session.hashCode());
+        logger.info("exists :[{}]", session.exists("/123132"));
+        session.mkdir("/201812130009");
+        logger.info("exists :[{}]", session.exists("/201812130009"));
+
+        //FtpClient ftpClient = (FtpClient) session.getClientInstance();
+//        boolean success = ftpClient.changeWorkingDirectory("/123");
+//        if (logger.isDebugEnabled()) {
+//            logger.debug("切换工作目录是否成功：【{}】", success);
+//        }
+//        if (!success) {
+//            session.mkdir("/123");
+//        }
     }
 }

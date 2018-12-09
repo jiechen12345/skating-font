@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties("ctbc.ftp")
 @Component
 public class FtpProperties {
+    
     /**
      * ftp host
      */
