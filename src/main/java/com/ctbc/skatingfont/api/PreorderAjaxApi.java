@@ -67,11 +67,11 @@ public class PreorderAjaxApi {
 
     @RequestMapping(value = "/findSessionsByPreorderDateAjax", method = RequestMethod.POST)
     public List<PreorderDto> findSessionsByPreorderDateAjax(@RequestBody String preorderDate) {
-        try {
-            this.aa();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            this.aa();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         LOGGER.info(preorderDate);
         List<Sessions> sessionsList = sessionsDao.findAllByDatOrderByStartTime(preorderDate);
         List<PreorderDto> preorderDtoList = new ArrayList<PreorderDto>();
