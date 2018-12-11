@@ -71,42 +71,21 @@ public class UploadingController {
     public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
         PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
 
-        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
+        //System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
         //-----
-        Session<FTPFile> session = sessionFactory.getSession();
-        FTPFile[] list = session.list("./");
-        for (FTPFile f : list) {
-            System.out.println(f.getName());
-        }
-
-        //--
-
-        if (preOrder != null) {
-            String subDir = "/" + preorderId + "/";
-            session.mkdir(subDir);
-            //new File(this.uploadingdir + subDir).mkdirs();
-            for (MultipartFile uploadedFile : uploadingFiles) {
-                FileInputStream fis = new FileInputStream("D://1.jpg");
-
-
-                session.write(fis, "1122.jpg");
-                //FTPClient ftpClient = (FTPClient) session.getClientInstance();
-                System.out.print(11);
-                //   File file = new File(uploadingdir + subDir + uploadedFile.getOriginalFilename());
-                //檢查是否是圖片
-//                if (!checkFile(file.getName())) {
-//                    model.addAttribute("errMsg", "請上傳圖片格式");
-//                    model.addAttribute("preorderDto", new PreorderDto(preorderId));
-//                    return "uploading";
-//                }
-//                uploadedFile.transferTo(file);
-
+        try (Session<FTPFile> session = sessionFactory.getSession();) {
+            //--
+            if (preOrder != null) {
+                String subDir = "/" + preorderId + "/";
+                session.mkdir(subDir);
+                for (MultipartFile uploadedFile : uploadingFiles) {
+                    session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
+                }
+                session.close();
+            } else {
+                model.addAttribute("errMsg", "系統錯誤請嘗試重新操作!");
+                return "index";
             }
-
-            session.close();
-        } else {
-            model.addAttribute("errMsg", "系統錯誤請嘗試重新操作!");
-            return "index";
         }
         return "redirect:/uploadImg"; //todo: 要改成到OTP
     }

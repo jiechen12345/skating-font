@@ -1,24 +1,14 @@
 package com.ctbc.skatingfont.config;
 
-import com.ctbc.skatingfont.api.PreorderAjaxApi;
-import com.ctbc.skatingfont.core.FtpProperties;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
-import org.apache.commons.net.ftp.FTPSClient;
-import org.apache.commons.net.ftp.FTPSServerSocketFactory;
 import org.apache.commons.net.util.TrustManagerUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.file.remote.session.CachingSessionFactory;
-import org.springframework.integration.file.remote.session.Session;
 import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.integration.ftp.session.DefaultFtpsSessionFactory;
-
-import javax.net.ssl.TrustManager;
-import java.io.IOException;
 
 
 /**

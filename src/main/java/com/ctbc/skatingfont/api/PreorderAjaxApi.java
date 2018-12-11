@@ -2,7 +2,6 @@ package com.ctbc.skatingfont.api;
 
 import com.ctbc.skatingfont.common.Common;
 import com.ctbc.skatingfont.config.FtpConfig;
-import com.ctbc.skatingfont.core.FtpProperties;
 import com.ctbc.skatingfont.dao.AccommodateDao;
 import com.ctbc.skatingfont.dao.PreorderDao;
 import com.ctbc.skatingfont.dao.SessionsDao;
@@ -10,28 +9,18 @@ import com.ctbc.skatingfont.dto.PreorderDto;
 import com.ctbc.skatingfont.entity.PreOrder;
 import com.ctbc.skatingfont.entity.Sessions;
 import com.ctbc.skatingfont.request.PreorderReq;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.integration.file.remote.session.Session;
-import org.springframework.integration.file.remote.session.SessionFactory;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import sun.net.ftp.FtpClient;
 
-import javax.persistence.criteria.Predicate;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 /**
  * Created by JieChen on 2018/11/14.

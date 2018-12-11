@@ -1,4 +1,4 @@
-package com.ctbc.skatingfont.core;
+package com.ctbc.skatingfont.config;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
