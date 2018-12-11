@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Optional;
 
@@ -70,12 +71,14 @@ public class UploadingController {
     public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
         PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
 
+        System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
         //-----
         Session<FTPFile> session = sessionFactory.getSession();
-        logger.info("current session is:[{}]", session.hashCode());
-        logger.info("exists :[{}]", session.exists("/123132"));
-        session.mkdir("/201812130009");
-        logger.info("exists :[{}]", session.exists("/201812130009"));
+        FTPFile[] list = session.list("./");
+        for (FTPFile f : list) {
+            System.out.println(f.getName());
+        }
+
         //--
 
         if (preOrder != null) {
@@ -83,7 +86,10 @@ public class UploadingController {
             session.mkdir(subDir);
             //new File(this.uploadingdir + subDir).mkdirs();
             for (MultipartFile uploadedFile : uploadingFiles) {
-                session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
+                FileInputStream fis = new FileInputStream("D://1.jpg");
+
+
+                session.write(fis, "1122.jpg");
                 //FTPClient ftpClient = (FTPClient) session.getClientInstance();
                 System.out.print(11);
                 //   File file = new File(uploadingdir + subDir + uploadedFile.getOriginalFilename());

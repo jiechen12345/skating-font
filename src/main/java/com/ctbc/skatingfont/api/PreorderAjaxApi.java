@@ -61,17 +61,8 @@ public class PreorderAjaxApi {
     Integer quota;
     Logger logger = LoggerFactory.getLogger(PreorderAjaxApi.class);
 
-    @Autowired
-    @Qualifier("ftpSessionFactory")
-    private SessionFactory<FTPFile> sessionFactory;
-
     @RequestMapping(value = "/findSessionsByPreorderDateAjax", method = RequestMethod.POST)
     public List<PreorderDto> findSessionsByPreorderDateAjax(@RequestBody String preorderDate) {
-//        try {
-//            this.aa();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         LOGGER.info(preorderDate);
         List<Sessions> sessionsList = sessionsDao.findAllByDatOrderByStartTime(preorderDate);
         List<PreorderDto> preorderDtoList = new ArrayList<PreorderDto>();
@@ -122,23 +113,5 @@ public class PreorderAjaxApi {
         int remaining = quota - Common.get(sessions.getReserved());
         preorderDto.setRemaining(remaining);
         return preorderDto;
-    }
-
-    public void aa() throws IOException {
-        Session session = sessionFactory.getSession();
-
-        logger.info("current session is:[{}]", session.hashCode());
-        logger.info("exists :[{}]", session.exists("/123132"));
-        session.mkdir("/2018121300099999");
-        logger.info("exists :[{}]", session.exists("/201812130009"));
-
-        //FtpClient ftpClient = (FtpClient) session.getClientInstance();
-//        boolean success = ftpClient.changeWorkingDirectory("/123");
-//        if (logger.isDebugEnabled()) {
-//            logger.debug("切换工作目录是否成功：【{}】", success);
-//        }
-//        if (!success) {
-//            session.mkdir("/123");
-//        }
     }
 }
