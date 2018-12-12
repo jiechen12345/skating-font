@@ -71,5 +71,5 @@ dependencies {
 //   runtime('mysql:mysql-connector-java')
     runtimeOnly('com.microsoft.sqlserver:mssql-jdbc')
     "commons-fileupload:commons-fileupload:1.2.2"
-    compile group: 'org.springframework.integration', name: 'spring-integration-ftp', version: '3.0.5.RELEASE'
+    compile group: 'org.springframework.integration', name: 'spring-integration-ftp'
 }
