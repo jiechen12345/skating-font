@@ -73,6 +73,7 @@ public class UploadingController {
 
         //System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
         //-----
+//        logger.info("ftp------");
         try (Session<FTPFile> session = sessionFactory.getSession();) {
             //--
             if (preOrder != null) {
@@ -80,6 +81,7 @@ public class UploadingController {
                 session.mkdir(subDir);
                 for (MultipartFile uploadedFile : uploadingFiles) {
                     if (checkFile(uploadedFile.getOriginalFilename())) {
+//                        logger.info("checkFile true");
                         session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
                     }else{
                         model.addAttribute("errMsg", "上傳檔案包含非圖片檔案請重新上傳!");
@@ -96,6 +98,7 @@ public class UploadingController {
     }
 
     private boolean checkFile(String fileName) {
+//        logger.info("fileName= "+ fileName);
         String suffixList = "jpg,gif,png,bmp,jpeg";
         String suffix = fileName.substring(fileName.lastIndexOf(".")
                 + 1, fileName.length());
