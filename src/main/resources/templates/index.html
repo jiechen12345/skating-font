@@ -44,10 +44,21 @@
 
     function isDate() {
         var re = (/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+        var preorderDate = $("#preorderDate").val();
+        var Today = new Date();
+        var now = Today.getFullYear() + "-" + (Today.getMonth() + 1) + "-" + Today.getDate();
+        console.log(preorderDate);
+        console.log(now);
         if (!re.test($("#preorderDate").val())) {
             alertWarning('日期格式有誤！')
             $("#preorderDate").val('');
             $("#preorderDate").focus();
+        } else {
+            if (preorderDate < now) {
+                alertWarning('請選擇未來日期！')
+                $("#preorderDate").val('');
+                $("#preorderDate").focus();
+            }
         }
     }
 
