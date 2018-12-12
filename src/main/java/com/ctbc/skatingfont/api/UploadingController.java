@@ -79,7 +79,12 @@ public class UploadingController {
                 String subDir = "/" + preorderId + "/";
                 session.mkdir(subDir);
                 for (MultipartFile uploadedFile : uploadingFiles) {
-                    session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
+                    if (checkFile(uploadedFile.getOriginalFilename())) {
+                        session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
+                    }else{
+                        model.addAttribute("errMsg", "上傳檔案包含非圖片檔案請重新上傳!");
+                        return "uploading"; //todo: 要改成到OTP
+                    }
                 }
                 session.close();
             } else {
@@ -90,13 +95,8 @@ public class UploadingController {
         return "redirect:/uploadImg"; //todo: 要改成到OTP
     }
 
-    /**
-     * 判断是否为允许的上传文件类型,true表示允许
-     */
     private boolean checkFile(String fileName) {
-        //设置允许上传文件类型
         String suffixList = "jpg,gif,png,bmp,jpeg";
-        // 获取文件后缀
         String suffix = fileName.substring(fileName.lastIndexOf(".")
                 + 1, fileName.length());
         if (suffixList.contains(suffix.trim().toLowerCase())) {
