@@ -26,7 +26,7 @@ public class FtpConfig {
         sf.setPort(Integer.parseInt(ftpProperties.getFtpPort()));
         sf.setUsername(ftpProperties.getFtpUsername());
         sf.setPassword(ftpProperties.getFtpPassword());
-        sf.setBufferSize(1024 * 512);
+        sf.setBufferSize(3276800);
         sf.setTrustManager(TrustManagerUtils.getAcceptAllTrustManager());
         // sf.setTrustManager(new TrustManager());
         sf.setClientMode(FTPClient.PASSIVE_LOCAL_DATA_CONNECTION_MODE);
