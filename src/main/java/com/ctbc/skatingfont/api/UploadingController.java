@@ -68,7 +68,7 @@ public class UploadingController {
 //        return "redirect:/uploadImg"; //todo: 要改成到OTP
 //    }
     @RequestMapping(value = "/uploadImg", method = RequestMethod.POST)
-    public String uploadingPost(@RequestParam("uploadingFiles") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
+    public String uploadingPost(@RequestParam("fileInput") MultipartFile[] uploadingFiles, @RequestParam("preorderId") String preorderId, Model model) throws IOException {
         PreOrder preOrder = preorderDao.findById(preorderId).orElse(null);
 
         //System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
@@ -83,8 +83,8 @@ public class UploadingController {
                     if (checkFile(uploadedFile.getOriginalFilename())) {
 //                        logger.info("checkFile true");
                         session.write(uploadedFile.getInputStream(), subDir + uploadedFile.getOriginalFilename());
-                    }else{
-                        model.addAttribute("errMsg", "上傳檔案包含非圖片檔案請重新上傳!");
+                    } else {
+                        model.addAttribute("errMsg", "上傳檔案包含非圖片檔案請重新上傳! (jpg,jpeg,png,bmp,gif)");
                         return "uploading"; //todo: 要改成到OTP
                     }
                 }

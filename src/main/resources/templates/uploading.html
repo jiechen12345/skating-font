@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
-    <script>
-
-    </script>
+    <script th:src="@{/js/alertBox.js}" src="/js/alertBox.js"></script>
+    <script th:src="@{/js/upload.js}"></script>
+    <link th:href="@{/css/bootstrap.min.css}" href="/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 
 <body onload="updateSize();">
@@ -13,25 +13,27 @@
     <H5>[[${errMsg}]]</H5>
     <input type="text" id="preorderId" name="preorderId" th:value="${preorderDto!=null}?${preorderDto.getId()}:''">
     <p>
-        <input id="fileInput" type="file" name="uploadingFiles" onchange="updateSize();" accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp" multiple="multiple" required >
+        <input id="fileInput" type="file" name="fileInput" onchange="updateSize();"
+               accept="image/jpeg,image/jpg,image/png,image/gif,image/bmp" multiple="multiple" required>
         selected files: <span id="fileNum">0</span>;
         total size: <span id="fileSize">0</span>
     </p>
     <p>
         <input type="submit" value="Upload files">
     </p>
-    <div id="output1" ></div>
+    <div id="output1"></div>
 </form>
 <div>
 
     <div>Uploaded files:</div>
     <div th:each="file: ${files}">
         <div>
-        [[${file.Name}]]
+            [[${file.Name}]]
         </div>
     </div>
 
 </div>
+<script th:src="@{/js/jquery-3.3.1.min.js}" src="../static/js/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
 <script>
     (function () {
         'use strict';
@@ -56,6 +58,14 @@
             oFiles = document.getElementById("fileInput").files,
             nFiles = oFiles.length;
         for (var nFileId = 0; nFileId < nFiles; nFileId++) {
+            console.log('** ' + oFiles[nFileId].size);
+            if (oFiles[nFileId].size > 10500000) {
+                alertWarning('單個檔案不能超過10MB，請重新上傳!!')
+                $("#fileInput").val('');
+                nFiles = 0;
+                sOutput = 0;
+                break;
+            }
             nBytes += oFiles[nFileId].size;
         }
 
