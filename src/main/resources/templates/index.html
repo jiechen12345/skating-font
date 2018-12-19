@@ -43,7 +43,8 @@
     }
 
     function isDate() {
-        var re = (/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+        // var re = (/^(\d{1,4})(-|\/)(\d{1,2})\2(\d{1,2})$/);
+        var re = (/^[0-9]{4}-[0-1]{1}[0-9]{1}-[0-3]{1}[0-9]{1}$/);
         var preorderDate = $("#preorderDate").val();
         var Today = new Date();
         var now = Today.getFullYear() + "-" + (Today.getMonth() + 1) + "-" + Today.getDate();
